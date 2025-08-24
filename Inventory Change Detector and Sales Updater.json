@@ -1,0 +1,313 @@
+{
+  "name": "Inventory Change Detector and Sales Updater",
+  "nodes": [
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/13EpG9dKjPaT1jy1axaZhj2OyKVZCQS8G-HbyJH2KPkM/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "0ceaeb2b-b892-46dc-9a76-e0079da57ee4",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "MmakJwMgbP0wGEcd",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "58e2fc76-5bde-4e18-a925-17483ac23261",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ace45ad6-9724-43cc-b007-f3d81bdb99db",
+              "leftValue": "={{ $json.hasChanges }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        608,
+        0
+      ],
+      "id": "9747d311-e2d3-494f-bd06-63b7d10d8a69",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1dvST06TFpIwMxJxGBYnNcVxurPeokLKp1FebyR4U-mg/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet1",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Order No.": "{{ $json.orderNo }}",
+            "Product ID": "{{ $json.productId }}",
+            "Product Name": "{{ $json.productName }}",
+            "Category": "{{ $json.category }}",
+            "Item Price": "{{ $json.price }}",
+            "Quantity Sold": "{{ $json.quantitySold }}",
+            "Total Amount": "{{ $json.totalAmount }}",
+            "Sale Date": "{{ $json.saleDate }}",
+            "Sale Time": "{{ $json.saleTime }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Order No.",
+              "displayName": "Order No.",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product ID",
+              "displayName": "Product ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Product Name",
+              "displayName": "Product Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Category",
+              "displayName": "Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Item Price",
+              "displayName": "Item Price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Quantity Sold",
+              "displayName": "Quantity Sold",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Total Amount",
+              "displayName": "Total Amount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Sale Date",
+              "displayName": "Sale Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Sale Time",
+              "displayName": "Sale Time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1088,
+        -128
+      ],
+      "id": "2a79478c-2cef-41d5-bf66-c4a374f162cc",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "MmakJwMgbP0wGEcd",
+          "name": "Google Sheets account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Node 5: Format Sales - Split sales into individual records\n\nconst inputData = $input.all()[0].json;\nconst salesRecords = inputData.sales || [];\n\nconsole.log('=== FORMATTING SALES ===');\nconsole.log('Received sales count:', salesRecords.length);\nconsole.log('Sales data:', JSON.stringify(salesRecords, null, 2));\n\n// Return each sale as a separate item for Google Sheets to process\nif (salesRecords.length > 0) {\n  console.log('Splitting', salesRecords.length, 'sales into individual records');\n  return salesRecords.map((sale, index) => {\n    console.log(`Formatting sale ${index + 1}: ${sale.productName}`);\n    return sale;\n  });\n} else {\n  console.log('No sales to format');\n  return [];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        -128
+      ],
+      "id": "a055267d-27c0-482c-8619-d2b1ea07926c",
+      "name": "Split_Sales_Record"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Fixed Node 3: Handle Google Sheets Object Data Format\n\n// Get the raw input data\nconst inputData = $input.all();\nconsole.log('=== RAW INPUT DEBUG ===');\nconsole.log('Input structure:', JSON.stringify(inputData, null, 2));\n\nlet salesRecords = [];\nlet actualData = null;\n\n// Try multiple ways to access the Google Sheets data\nif (inputData && inputData.length > 0) {\n  const firstItem = inputData[0];\n  console.log('First item keys:', Object.keys(firstItem));\n  console.log('First item:', JSON.stringify(firstItem, null, 2));\n  \n  // Method 1: Check if data is in .json property as array\n  if (firstItem.json && Array.isArray(firstItem.json)) {\n    actualData = firstItem.json;\n    console.log('✅ Found data in .json as array');\n  }\n  // Method 2: Check if data is in .json property as object with values\n  else if (firstItem.json && firstItem.json.values) {\n    actualData = firstItem.json.values;\n    console.log('✅ Found data in .json.values');\n  }\n  // Method 3: Check if data is directly in the item\n  else if (Array.isArray(firstItem)) {\n    actualData = firstItem;\n    console.log('✅ Found data as direct array');\n  }\n  // Method 4: Check if multiple items represent rows\n  else if (inputData.length > 1) {\n    actualData = inputData;\n    console.log('✅ Using all input items as data rows');\n  }\n  // Method 5: Check various Google Sheets response formats\n  else {\n    console.log('🔍 Exploring all properties of first item:');\n    for (const [key, value] of Object.entries(firstItem)) {\n      console.log(`  ${key}:`, typeof value, Array.isArray(value) ? `(array length: ${value.length})` : '');\n      if (key !== 'json' && Array.isArray(value)) {\n        console.log(`    Sample from ${key}:`, JSON.stringify(value.slice(0, 2)));\n      }\n    }\n  }\n}\n\nconsole.log('=== PROCESSING DATA ===');\nconsole.log('Actual data:', JSON.stringify(actualData, null, 2));\nconsole.log('Data type:', typeof actualData);\nconsole.log('Is array:', Array.isArray(actualData));\n\n// Process the data if we found it\nif (Array.isArray(actualData) && actualData.length > 0) {\n  console.log('Processing', actualData.length, 'rows');\n  \n  // Process each row\n  for (let i = 0; i < actualData.length; i++) {\n    const row = actualData[i];\n    console.log(`Row ${i}:`, JSON.stringify(row, null, 2));\n    \n    let productId, productName, category, price, quantity;\n    \n    // Handle different row formats\n    if (Array.isArray(row)) {\n      // Standard array format\n      productId = row[0];\n      productName = row[1];\n      category = row[2];\n      price = parseFloat(row[3]) || 0;\n      quantity = parseInt(row[4]) || 0;\n    } else if (typeof row === 'object' && row !== null) {\n      // Object format - try different property names\n      productId = row['Product ID'] || row.productId || row['0'] || row.A;\n      productName = row['Product Name'] || row.productName || row['1'] || row.B;\n      category = row['Category'] || row.category || row['2'] || row.C;\n      price = parseFloat(row['Price'] || row.price || row['3'] || row.D || 0);\n      quantity = parseInt(row['Current Quantity'] || row.quantity || row['4'] || row.E || 0);\n      \n      // If still no data, try json property of the row\n      if (!productId && row.json) {\n        if (Array.isArray(row.json)) {\n          productId = row.json[0];\n          productName = row.json[1];\n          category = row.json[2];\n          price = parseFloat(row.json[3]) || 0;\n          quantity = parseInt(row.json[4]) || 0;\n        }\n      }\n    }\n    \n    console.log(`Extracted from row ${i}: ID=\"${productId}\", Name=\"${productName}\", Price=${price}, Qty=${quantity}`);\n    \n    // Create test sale if we have valid product data\n    if (productId && productName && price > 0) {\n      // Create a sale for ALL products (for testing)\n      const orderNum = `ORD${Date.now().toString().slice(-6)}${i.toString().padStart(2, '0')}`;\n      const soldQty = Math.floor(Math.random() * 3) + 1; // 1-3 items\n      const totalAmount = price * soldQty;\n      \n      const saleRecord = {\n        orderNo: orderNum,\n        productId: productId,\n        productName: productName,\n        category: category || 'General',\n        itemPrice: price,\n        quantitySold: soldQty,\n        totalAmount: parseFloat(totalAmount.toFixed(2)),\n        saleDate: new Date().toISOString().split('T')[0],\n        saleTime: new Date().toTimeString().split(' ')[0]\n      };\n      \n      salesRecords.push(saleRecord);\n      console.log(`🎉 SALE CREATED: ${productName} x${soldQty} = $${totalAmount.toFixed(2)}`);\n    } else {\n      console.log(`❌ Skipping row ${i}: Missing required data (ID=\"${productId}\", Name=\"${productName}\", Price=${price})`);\n    }\n  }\n} else {\n  console.log('❌ No valid data array found to process');\n}\n\n// Final result\nconst result = {\n  sales: salesRecords,\n  hasSales: salesRecords.length > 0,\n  salesCount: salesRecords.length,\n  message: salesRecords.length > 0 ? `Created ${salesRecords.length} test sales` : 'No sales created - check data format',\n  rawInputDebug: {\n    inputType: typeof inputData,\n    inputLength: inputData ? inputData.length : 0,\n    firstItemKeys: inputData && inputData.length > 0 ? Object.keys(inputData[0]) : [],\n    actualDataType: typeof actualData,\n    actualDataIsArray: Array.isArray(actualData),\n    actualDataLength: Array.isArray(actualData) ? actualData.length : 0\n  }\n};\n\nconsole.log('=== FINAL RESULT ===');\nconsole.log('Sales created:', result.salesCount);\nconsole.log('Has sales:', result.hasSales);\nconsole.log('Raw input debug:', JSON.stringify(result.rawInputDebug, null, 2));\n\nreturn [result];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        0
+      ],
+      "id": "6a663387-7914-4d33-a626-6008fde86477",
+      "name": "Detect Changes",
+      "alwaysOutputData": true
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "Detect Changes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Split_Sales_Record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split_Sales_Record": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Detect Changes": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4f5c0010-cb01-4cd4-ac8d-3662d362daf9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8a0333b8872ad01b3d5ab847d75a8aa92dce699d712a81ab8715e65d95858577"
+  },
+  "id": "tji8vchVkjCiTfnP",
+  "tags": []
+}
